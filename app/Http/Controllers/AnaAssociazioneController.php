@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\AnaAssociazione;
 use Illuminate\Http\Request;
 use Session;
+use App\Http\Controllers\Debugbar;
 
 class AnaAssociazioneController extends Controller
 {
@@ -47,7 +48,7 @@ class AnaAssociazioneController extends Controller
 
         Session::flash('flash_message', 'AnaAssociazione added!');
 
-        return redirect('ana-associazione');
+        return redirect('ana-associazione/1');
     }
 
     /**
@@ -88,13 +89,25 @@ class AnaAssociazioneController extends Controller
      */
     public function update($id, Request $request)
     {
-        
         $anaassociazione = AnaAssociazione::findOrFail($id);
-        $anaassociazione->update($request->all());
+        $logo = $request->file('logo');
+        if ($logo != null){
+            $contents = $logo->openFile()->fread($logo->getSize());
+            $anaassociazione->logo = $contents;
+        }
+        $anaassociazione->associazione = $request->associazione;
+        $anaassociazione->cap = $request->cap;
+        $anaassociazione->indirizzo = $request->indirizzo;
+        $anaassociazione->indirizzo2 = $request->indirizzo2;
+        $anaassociazione->localita = $request->localita;
+        $anaassociazione->presidente = $request->presidente;
+        $anaassociazione->provincia = $request->provincia;
+
+        $anaassociazione->save();
 
         Session::flash('flash_message', 'AnaAssociazione updated!');
 
-        return redirect('ana-associazione');
+        return redirect('ana-associazione/1');
     }
 
     /**
@@ -111,5 +124,13 @@ class AnaAssociazioneController extends Controller
         Session::flash('flash_message', 'AnaAssociazione deleted!');
 
         return redirect('ana-associazione');
+    }
+
+    public  function logo()
+    {
+        $ana = AnaAssociazione::findOrFail(1);
+
+        return response()->make($ana->logo, 200, array(
+            'Content-Type' => ("Content-type: image/jpeg")));
     }
 }

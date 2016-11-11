@@ -12,5 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        DB::table('anaassociazione')->insert([
+            'id' => 1,
+            'associazione' => 'Ragione sociale',
+            'indirizzo' => '',
+            'indirizzo2' => '',
+            'cap' => '',
+            'localita' => '',
+            'provincia' => '',
+            'presidente' => '',
+            'logo' => 0
+        ]);
     }
 }

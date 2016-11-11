@@ -15,4 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('ana-associazione/logo', 'AnaAssociazioneController@logo');
 Route::resource('ana-associazione', 'AnaAssociazioneController');
+
+Route::get('ana-associati/avatar', 'AnaAssociatiController@avatar');
+Route::resource('ana-associati', 'AnaAssociatiController');

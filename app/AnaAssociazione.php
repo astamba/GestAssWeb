@@ -25,5 +25,5 @@ class AnaAssociazione extends Model
      *
      * @var array
      */
-    protected $fillable = [''];
+    protected $fillable = ['associazione', 'cap', 'localita', 'provincia', 'indirizzo', 'indirizzo2', 'presidente', 'logo'];
 }
