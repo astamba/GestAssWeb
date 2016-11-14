@@ -35,10 +35,39 @@ class AnaAssociati extends Model
         'datascadlicenza',
         'indirizzo',
         'localita',
+        'luogonascita',
         'nlicenza',
         'nome',
         'ntesseraagonista',
         'ntesserafipsas',
-        'provincia'
+        'provincia',
+        'provincianascita',
+        'attivo'
     ];
+
+    protected $casts = [
+        'attivo' => 'boolean',
+        'codicegarista' => 'integer',
+    ];
+
+    protected $dates = [
+        'datanascita',
+        'datascadlicenza'
+    ];
+
+    public static function boot(){
+        parent::boot();
+
+        static::creating(function($model){
+            foreach ($model->attributes as $key => $value) {
+                $model->{$key} = empty($value) ? null : $value;
+            }
+        });
+
+//        static::updating(function($model){
+//            foreach ($model->attributes as $key => $value) {
+//                $model->{$key} = empty($value) ? null : $value;
+//            }
+//        });
+    }
 }

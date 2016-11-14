@@ -9,6 +9,7 @@ use App\AnaAssociati;
 use Illuminate\Http\Request;
 use Session;
 use App\Http\Controllers\Debugbar;
+use Illuminate\Support\Facades\Input;
 
 class AnaAssociatiController extends Controller
 {
@@ -19,7 +20,7 @@ class AnaAssociatiController extends Controller
      */
     public function index()
     {
-        $ana = AnaAssociati::paginate(15);
+        $ana = AnaAssociati::orderBy('cognome', 'asc')->get();
 
         return view('ana-associati.index', compact('ana'));
     }
@@ -43,9 +44,59 @@ class AnaAssociatiController extends Controller
      */
     public function store(Request $request)
     {
-        
-        AnaAssociati::create($request->all());
+        //eseguo la validazione dei dati
+        $this->validate($request, [
+            'cognome' => 'required',
+            'nome' => 'required'
+        ]);
 
+        $ana = AnaAssociati::create();
+        $avatar = $request->file('avatar');
+        if ($avatar != null){
+            $contents = $avatar->openFile()->fread($avatar->getSize());
+            $ana->logo = $contents;
+        }
+        $ana->cap = $request->cap;
+        $ana->codicefiscale = $request->codicefiscale;
+
+        if($request->codicegarista == null or empty($request->codicegarista)) {
+            $ana->codicegarista = 0;
+        }
+        else{
+            $ana->codicegarista = $request->codicegarista;
+        }
+        $ana->cognome = $request->cognome;
+        if ($request->datanascita == null or empty($request->datanascita)){
+            $ana->datanascita = null;
+        }
+        else{
+            $ana->datanascita = $request->datanascita;
+        }
+
+        if ($request->datascadlicenza == null or empty($request->datascadlicenza)) {
+            $ana->datascadlicenza = null;
+        }
+        else{
+            $ana->datascadlicenza = $request->datascadlicenza;
+        }
+        $ana->indirizzo = $request->indirizzo;
+        $ana->localita = $request->localita;
+        $ana->luogonascita = $request->luogonascita;
+        $ana->nlicenza = $request->nlicenza;
+        $ana->nome = $request->nome;
+        $ana->ntesseraagonista = $request->ntesseraagonista;
+        $ana->ntesserafipsas = $request->ntesserafipsas;
+        $ana->provincia = $request->provincia;
+        $ana->provincianascita = $request->provincianascita;
+
+        if($request->attivo != null){
+            $ana->attivo = true;
+        }
+        else{
+            $ana->attivo = false;
+        }
+
+        $ana->save();
         Session::flash('flash_message', 'AnaAssociati added!');
 
         return redirect('ana-associati');
@@ -76,7 +127,7 @@ class AnaAssociatiController extends Controller
     {
         $ana = AnaAssociati::findOrFail($id);
 
-        return view('ana-associati.edit', compact('anaassociati'));
+        return view('ana-associati.edit', compact('ana'));
     }
 
     /**
@@ -89,6 +140,11 @@ class AnaAssociatiController extends Controller
      */
     public function update($id, Request $request)
     {
+        $this->validate($request, [
+            'cognome' => 'required',
+            'nome' => 'required'
+        ]);
+
         $ana = AnaAssociati::findOrFail($id);
         $avatar = $request->file('avatar');
         if ($avatar != null){
@@ -97,18 +153,45 @@ class AnaAssociatiController extends Controller
         }
 
         $ana->cap = $request->cap;
+
         $ana->codicefiscale = $request->codicefiscale;
-        $ana->codicegarista = $request->codicegarista;
+
+        if($request->codicegarista == null or empty($request->codicegarista)) {
+            $ana->codicegarista = 0;
+        }
+        else{
+            $ana->codicegarista = $request->codicegarista;
+        }
         $ana->cognome = $request->cognome;
-        $ana->datanascita = $request->datanascita;
-        $ana->datascadlicenza = $request->datascadlicenza;
+        if ($request->datanascita == null or empty($request->datanascita)){
+            $ana->datanascita = null;
+        }
+        else{
+            $ana->datanascita = $request->datanascita;
+        }
+
+        if ($request->datascadlicenza == null or empty($request->datascadlicenza)) {
+            $ana->datascadlicenza = null;
+        }
+        else{
+            $ana->datascadlicenza = $request->datascadlicenza;
+        }
         $ana->indirizzo = $request->indirizzo;
         $ana->localita = $request->localita;
+        $ana->luogonascita = $request->luogonascita;
         $ana->nlicenza = $request->nlicenza;
         $ana->nome = $request->nome;
         $ana->ntesseraagonista = $request->ntesseraagonista;
         $ana->ntesserafipsas = $request->ntesserafipsas;
         $ana->provincia = $request->provincia;
+        $ana->provincianascita = $request->provincianascita;
+
+        if($request->attivo != null){
+            $ana->attivo = true;
+        }
+        else{
+            $ana->attivo = false;
+        }
 
         $ana->save();
 

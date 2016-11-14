@@ -38,10 +38,10 @@
             <li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>Anagrafiche</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="{{url('ana-associazione/1')}}">Associazione</a></li>
-                    <li><a href="{{url('ana-associati')}}">Associati</a></li>
+                    <li><a href="{{ url('ana-associazione/1') }}">Associazione</a></li>
+                    <li><a href="{{ url('ana-associati') }}">Associati</a></li>
                     <li><a href="#">Gare</a></li>
-                    <li><a href="#">Articoli</a></li>
+                    <li><a href="{{ url('ana-articoli') }}">Articoli</a></li>
                 </ul>
             </li>
             <li class="treeview">

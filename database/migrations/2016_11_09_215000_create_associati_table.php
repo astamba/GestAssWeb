@@ -30,6 +30,7 @@ class CreateAssociatiTable extends Migration
             $table->binary('avatar')->nullable();
             $table->string('nlicenza', 20)->default('');
             $table->date('datascadlicenza')->nullable();
+            $table->string('provincianascita', 2)->default('');
         });
     }
 
